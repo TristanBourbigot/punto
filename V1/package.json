@@ -8,7 +8,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.3.4"
+    "vue": "^3.3.4",
+    "vuetify-use-dialog": "^0.6.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.4.0",
