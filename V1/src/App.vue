@@ -4,13 +4,15 @@
 export default {
   data : function() {
         return {
-          cardToPlay: "card_B_8.png",
+          cardToPlay: "",
           playeurToPlay : "Joueur",
           nbTurn : 0,
+          nbCard : 18,
           nbPlayeurToPlay : 0,
           nbPlayeur : 2,
           playeurName : ["Joueur 1", "Joueur 2", "Joueur 3", "Joueur 4"],
           card : [[],[],[],[]],
+          cardPlayed : [],
           dialog : true,
           rules: {
             required: value => !!value || 'Champs requis',
@@ -22,25 +24,164 @@ export default {
   methods :{
     createGame(){
       this.dialog = false;
-      this.nbPlayeurToPlay = 1;
-      this.playeurToPlay = this.playeurName[this.nbPlayeurToPlay-1];
+      this.nbPlayeurToPlay = 0;
+      this.playeurToPlay = this.playeurName[this.nbPlayeurToPlay];
       this.nbTurn = 0;
+      for(var i = 0; i<11; i++){
+        this.cardPlayed.push([]);
+        var col = i+1;
+        for(var j = 0; j<11; j++){
+          var row = j+1;
+          this.cardPlayed[i].push({id : "col-"+col+"row-"+row, Number : null , Color : null, isPlayed : false, over : false, isPlayable : false});
+          if(col==6 && row==6) this.cardPlayed[i][j].isPlayable = true;
+        }
+      }
+      var color = ["B", "G", "R", "Y"];
+      var colorOfPlayer = null;
+
+      // generate card
+      if(this.nbPlayeur == 2){
+        var colorOfPlayer = [[],[]];
+        for(var i = 0; i<4; i++){
+          var random = Math.floor(Math.random() * color.length);
+          colorOfPlayer[i%2].push(color[random]);
+          color.splice(random, 1);
+        }
+        var number = [["1", "2", "3", "4", "5", "6", "7", "8", "9"], ["1", "2", "3", "4", "5", "6", "7", "8", "9"], 
+          ["1", "2", "3", "4", "5", "6", "7", "8", "9"], ["1", "2", "3", "4", "5", "6", "7", "8", "9"]];
+        for(var i = 0; i<18; i++){
+          var randomColorP1 = 0;
+          if(number[0].length != 0 && number[1].length != 0){
+            randomColorP1 = Math.floor(Math.random() * colorOfPlayer[0].length);
+          }else if(number[0].length == 0){
+            randomColorP1 = 1;
+          }
+
+          var randomColorP2 = 2;
+          if(number[2].length != 0 && number[3].length != 0){
+            randomColorP2 = Math.floor(Math.random() * colorOfPlayer[1].length) +2;
+          }else if(number[2].length == 0){
+            randomColorP2 = 3;
+          }
+
+          var randomNbP1 = Math.floor(Math.random() * number[randomColorP1].length);
+          var randomNbP2 = Math.floor(Math.random() * number[randomColorP2].length);
+          this.card[0].push("card_"+colorOfPlayer[0][randomColorP1]+"_"+number[randomColorP1][randomNbP1]+".png");
+          this.card[1].push("card_"+colorOfPlayer[1][randomColorP2-2]+"_"+number[randomColorP2][randomNbP2]+".png");
+          number[randomColorP1].splice(randomNbP1, 1);
+          number[randomColorP2].splice(randomNbP2, 1);
+        }
+      }else if(this.nbPlayeur == 3){
+        this.nbCard = 8;
+        var colorOfPlayer = [];
+        for(var i = 0; i<3; i++){
+          var random = Math.floor(Math.random() * color.length);
+          colorOfPlayer.push(color[random]);
+          color.splice(random, 1);
+        }
+        var number = [["1", "2", "3", "4", "5", "6", "7", "8", "9"], ["1", "2", "3", "4", "5", "6", "7", "8", "9"], 
+          ["1", "2", "3", "4", "5", "6", "7", "8", "9"]];
+        for(var i = 0; i<9; i++){
+          var randomNbP1 = Math.floor(Math.random() * number[0].length);
+          var randomNbP2 = Math.floor(Math.random() * number[1].length);
+          var randomNbP3 = Math.floor(Math.random() * number[2].length);
+          this.card[0].push("card_"+colorOfPlayer[0]+"_"+number[0][randomNbP1]+".png");
+          this.card[1].push("card_"+colorOfPlayer[1]+"_"+number[1][randomNbP2]+".png");
+          this.card[2].push("card_"+colorOfPlayer[2]+"_"+number[2][randomNbP3]+".png");
+          number[0].splice(randomNbP1, 1);
+          number[1].splice(randomNbP2, 1);
+          number[2].splice(randomNbP3, 1);
+        }
+      }else {
+        this.nbCard = 8;
+        var colorOfPlayer = [];
+        for(var i = 0; i<4; i++){
+          var random = Math.floor(Math.random() * color.length);
+          colorOfPlayer.push(color[random]);
+          color.splice(random, 1);
+        }
+        var number = [["1", "2", "3", "4", "5", "6", "7", "8", "9"], ["1", "2", "3", "4", "5", "6", "7", "8", "9"], 
+          ["1", "2", "3", "4", "5", "6", "7", "8", "9"], ["1", "2", "3", "4", "5", "6", "7", "8", "9"]];
+        for(var i = 0; i<7; i++){
+          var randomNbP1 = Math.floor(Math.random() * number[0].length);
+          var randomNbP2 = Math.floor(Math.random() * number[1].length);
+          var randomNbP3 = Math.floor(Math.random() * number[2].length);
+          var randomNbP4 = Math.floor(Math.random() * number[3].length);
+          this.card[0].push("card_"+colorOfPlayer[0]+"_"+number[0][randomNbP1]+".png");
+          this.card[1].push("card_"+colorOfPlayer[1]+"_"+number[1][randomNbP2]+".png");
+          this.card[2].push("card_"+colorOfPlayer[2]+"_"+number[2][randomNbP3]+".png");
+          this.card[3].push("card_"+colorOfPlayer[3]+"_"+number[3][randomNbP4]+".png");
+          number[0].splice(randomNbP1, 1);
+          number[1].splice(randomNbP2, 1);
+          number[2].splice(randomNbP3, 1);
+          number[3].splice(randomNbP4, 1);
+        }
+      }
+      this.cardToPlay = this.card[this.nbPlayeurToPlay][this.nbTurn];
+
+      this.chowPlayable();
     },
-    playCard(idCol){
+    playCard(idCol, i, j){
+      if(!this.cardPlayed[i][j].isPlayable) return;
       document.getElementById(idCol).innerHTML = "<img src='/src/assets/card/"+this.cardToPlay+"' id='cardToPlay' height='57px' width='57px'> ";
-      changePlayeur();
+      this.cardPlayed[i][j].Number = this.cardToPlay.split("_")[2].split(".")[0];
+      this.cardPlayed[i][j].Color = this.cardToPlay.split("_")[1];
+      this.cardPlayed[i][j].isPlayed = true;
+      this.cardPlayed[i][j].over = true;
+      this.changePlayeur();
+      var colMin = -1;
+      var colMax = -1;
+      var rowMin = -1;
+      var rowMax = -1;
+      for(var u = 0; u<11;u++){
+        for(var v = 0; v<11;v++){
+          if(this.cardPlayed[u][v].isPlayed && this.cardPlayed[u][v].Number >= this.cardToPlay.split("_")[2].split(".")[0]){
+            this.cardPlayed[u][v].isPlayable = false;
+          }else if(u>=i-1 && u<=i+1 && v>=j-1 && v<=j+1) {
+            this.cardPlayed[u][v].isPlayable = true;
+          }     
+          if(this.cardPlayed[u][v].isPlayed){
+            if(colMin == -1 || colMin > u) colMin = u;
+            if(colMax == -1 || colMax < u) colMax = u;
+            if(rowMin == -1 || rowMin > v) rowMin = v;
+            if(rowMax == -1 || rowMax < v) rowMax = v;
+          }
+        }
+      }
+      
+      for(var u = 0; u<11;u++){
+        for(var v = 0; v<11;v++){
+          if(v==7 && u==7) console.log(u>colMax , u , colMax)
+          if((colMin!=-1 && (colMax-colMin>=5) &&( colMin>u || u>colMax)) || (rowMin!=-1 && (rowMax-rowMin>=5) &&( rowMin>v || v>rowMax))){
+            this.cardPlayed[u][v].isPlayable = false;
+          }       
+        }
+      }
+      this.chowPlayable();
     },
     changePlayeur(){
       if(this.nbPlayeurToPlay == this.nbPlayeur-1){
-        this.nbPlayeurToPlay = 1;
-        nbTurn++;
+        this.nbPlayeurToPlay = 0;
+        this.nbTurn++;
+      }else {
+        this.nbPlayeurToPlay++;
       }
       this.playeurToPlay = this.playeurName[this.nbPlayeurToPlay];
-      cardToPlay = this.card[this.nbPlayeurToPlay][nbTurn];
+      this.cardToPlay = this.card[this.nbPlayeurToPlay][this.nbTurn];
     },
+    chowPlayable(){
+      for(var i = 0; i<11;i++){
+        for(var j = 0; j<11;j++){
+          if(this.cardPlayed[i][j].isPlayable == true){
+            document.getElementById(this.cardPlayed[i][j].id).style.border= "solid #cfcfcf 1.5px";
+          }else{
+            document.getElementById(this.cardPlayed[i][j].id).style.border= "";
+          }
+        }
+      }
+    }
   }
 }
-
 </script>
 
 <template>
@@ -48,7 +189,7 @@ export default {
 <div class="plateau">
   <div class="grille">  
     <div :class="'row-'+i"  v-for="i in 11" :key="i">
-        <div :class="'col col-'+i+j"  :id="'col-'+i+j" v-for="j in 11" :key="j" v-on:click="playCard('col-'+i+j)">
+        <div :class="'col col-'+i+'row-'+j"  :id="'col-'+i+'row-'+j" v-for="j in 11" :key="j" v-on:click="playCard('col-'+i+'row-'+j,i-1,j-1)">
         </div>
     </div>
   </div>
@@ -58,7 +199,7 @@ export default {
 <footer>
   <div class="info">
     <h2 id="playeurName">{{this.playeurToPlay }}</h2>
-    <p id="nbCardRest">Nombre de cartes restantes : {{ 8- this.nbTurn }}</p>
+    <p id="nbCardRest">Nombre de cartes restantes : {{  this.nbCard-this.nbTurn }}</p>
     <p id="nbCardPlayed">Nombre de cartes jouées : {{ this.nbTurn }}</p>
     <div class="cardToPlay">
       <img :src="'/src/assets/card/'+this.cardToPlay"  id="cardToPlay">
@@ -70,6 +211,7 @@ export default {
     <v-dialog
       v-model="dialog"
       transition="dialog-bottom-transition"
+      persistent
       width="500px"
     >
       <v-card>
@@ -77,7 +219,7 @@ export default {
           color="#7b7b7b"
           title="Créer une partie"
         ></v-toolbar>
-        <v-card-text style="background-color:#cfcfcf;">
+        <v-card-text>
           <v-container>
             <v-row class="justify-center">
               <v-col cols="1" sm="10" md="10">
@@ -124,7 +266,7 @@ export default {
             </v-row>
           </v-container>
         </v-card-text>
-        <v-card-actions style="background-color:#cfcfcf;">
+        <v-card-actions>
           <v-btn color="primary" block @click="createGame()">Créer la partie</v-btn>
         </v-card-actions>
       </v-card>
@@ -168,12 +310,11 @@ Custom Grid
   display: grid;
   grid-template-columns: repeat(11, 1fr);
   grid-template-rows: repeat(11, 1fr);
-  height: 700px;
+  height: 660px;
   width: 660px;
 }
 
 .col{
-  border: solid #cfcfcf 1.5px;
   height: 60px;
   width: 60px;
   padding: 0px;
@@ -181,8 +322,8 @@ Custom Grid
 }
 
 .col:hover{
-  border: solid #cfcfcf 1.5px;
-  background: #7b7b7b;
+  /* border: solid #cfcfcf 1.5px; */
+  /* background: #7b7b7b; */
 }
 
 /* 
