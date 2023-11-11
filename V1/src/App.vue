@@ -148,10 +148,9 @@ export default {
           }
         }
       }
-      
+
       for(var u = 0; u<11;u++){
         for(var v = 0; v<11;v++){
-          if(v==7 && u==7) console.log(u>colMax , u , colMax)
           if((colMin!=-1 && (colMax-colMin>=5) &&( colMin>u || u>colMax)) || (rowMin!=-1 && (rowMax-rowMin>=5) &&( rowMin>v || v>rowMax))){
             this.cardPlayed[u][v].isPlayable = false;
           }       
