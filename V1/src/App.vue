@@ -32,7 +32,7 @@ export default {
         var col = i+1;
         for(var j = 0; j<11; j++){
           var row = j+1;
-          this.cardPlayed[i].push({id : "col-"+col+"row-"+row, Number : null , Color : null, isPlayed : false, over : false, isPlayable : false});
+          this.cardPlayed[i].push({id : "col-"+col+"row-"+row, Number : null , Color : null, isPlayed : false, isPlayable : false, playeur : null});
           if(col==6 && row==6) this.cardPlayed[i][j].isPlayable = true;
         }
       }
@@ -127,7 +127,7 @@ export default {
       this.cardPlayed[i][j].Number = this.cardToPlay.split("_")[2].split(".")[0];
       this.cardPlayed[i][j].Color = this.cardToPlay.split("_")[1];
       this.cardPlayed[i][j].isPlayed = true;
-      this.cardPlayed[i][j].over = true;
+      this.cardPlayed[i][j].playeur = this.playeurToPlay;
       this.changePlayeur();
       var colMin = -1;
       var colMax = -1;
@@ -156,6 +156,7 @@ export default {
           }       
         }
       }
+      this.asWinner();
       this.chowPlayable();
     },
     changePlayeur(){
@@ -175,6 +176,43 @@ export default {
             document.getElementById(this.cardPlayed[i][j].id).style.border= "solid #cfcfcf 1.5px";
           }else{
             document.getElementById(this.cardPlayed[i][j].id).style.border= "";
+          }
+        }
+      }
+    },
+    asWinner(){
+      // verifier si le joueur a gagné avec les colones
+      for(var i =0;i<11;i++){
+        var nbCardPlayerCol = 0;
+        var nbCardPlayerRow = 0;
+        var precedentPlayeurCol = null;
+        var precedentPlayeurRow = null;
+        for(var j =0;j<11;j++){
+          if(this.cardPlayed[i][j].isPlayed && (precedentPlayeurCol == null || precedentPlayeurCol == this.cardPlayed[i][j].playeur)){
+            nbCardPlayerCol++;
+            precedentPlayeurCol = this.cardPlayed[i][j].playeur;
+          }else {
+            nbCardPlayerCol = 0;
+            precedentPlayeurCol = null;
+          }
+
+          if((nbCardPlayerCol>= 5 && this.nbPlayeur == 2) || (nbCardPlayerCol>= 4 &&  this.nbPlayeur > 2) ){
+            alert("Le joueur "+precedentPlayeurCol+" a gagné");
+            return;
+          }
+
+          if(this.cardPlayed[j][i].isPlayed && (precedentPlayeurRow == null || precedentPlayeurRow == this.cardPlayed[j][i].playeur)){
+            nbCardPlayerRow++;
+            precedentPlayeurRow = this.cardPlayed[j][i].playeur;
+          }else {
+            nbCardPlayerRow = 0;
+            precedentPlayeurRow = null;
+          }
+
+          if((nbCardPlayerRow>= 5 && this.nbPlayeur == 2) || (nbCardPlayerRow>= 4 &&  this.nbPlayeur > 2) ){
+            console.log(nbCardPlayerRow);
+            alert("Le joueur "+precedentPlayeurRow+" a gagné");
+            return;
           }
         }
       }
