@@ -137,9 +137,10 @@ export default {
         for(var v = 0; v<11;v++){
           if(this.cardPlayed[u][v].isPlayed && this.cardPlayed[u][v].Number >= this.cardToPlay.split("_")[2].split(".")[0]){
             this.cardPlayed[u][v].isPlayable = false;
-          }else if(u>=i-1 && u<=i+1 && v>=j-1 && v<=j+1) {
+          }else if(this.cardPlayed[u][v].isPlayed && this.cardPlayed[u][v].Number < this.cardToPlay.split("_")[2].split(".")[0]) this.cardPlayed[u][v].isPlayable = true; 
+          else if(u>=i-1 && u<=i+1 && v>=j-1 && v<=j+1) {
             this.cardPlayed[u][v].isPlayable = true;
-          }else if(this.cardPlayed[u][v].isPlayed && this.cardPlayed[u][v].Number < this.cardToPlay.split("_")[2].split(".")[0]) this.cardPlayed[u][v].isPlayable = true;     
+          }    
           if(this.cardPlayed[u][v].isPlayed){
             if(colMin == -1 || colMin > u) colMin = u;
             if(colMax == -1 || colMax < u) colMax = u;
