@@ -139,7 +139,7 @@ export default {
             this.cardPlayed[u][v].isPlayable = false;
           }else if(u>=i-1 && u<=i+1 && v>=j-1 && v<=j+1) {
             this.cardPlayed[u][v].isPlayable = true;
-          }     
+          }else if(this.cardPlayed[u][v].isPlayed && this.cardPlayed[u][v].Number < this.cardToPlay.split("_")[2].split(".")[0]) this.cardPlayed[u][v].isPlayable = true;     
           if(this.cardPlayed[u][v].isPlayed){
             if(colMin == -1 || colMin > u) colMin = u;
             if(colMax == -1 || colMax < u) colMax = u;
@@ -151,7 +151,7 @@ export default {
 
       for(var u = 0; u<11;u++){
         for(var v = 0; v<11;v++){
-          if((colMin!=-1 && (colMax-colMin>=5) &&( colMin>u || u>colMax)) || (rowMin!=-1 && (rowMax-rowMin>=5) &&( rowMin>v || v>rowMax))){
+          if(!this.cardPlayed[u][v].isPlayed && (colMin!=-1 && (colMax-colMin>=5) &&( colMin>u || u>colMax)) || (rowMin!=-1 && (rowMax-rowMin>=5) &&( rowMin>v || v>rowMax))){
             this.cardPlayed[u][v].isPlayable = false;
           }       
         }
@@ -318,11 +318,6 @@ Custom Grid
   width: 60px;
   padding: 0px;
   margin: 0px;
-}
-
-.col:hover{
-  /* border: solid #cfcfcf 1.5px; */
-  /* background: #7b7b7b; */
 }
 
 /* 
