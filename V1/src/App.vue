@@ -182,7 +182,7 @@ export default {
       }
     },
     asWinner(){
-      // verifier si le joueur a gagné avec les colones
+      // verifier si le joueur a gagné avec les colones et les ligne
       for(var i =0;i<11;i++){
         var nbCardPlayerCol = 0;
         var nbCardPlayerRow = 0;
@@ -215,7 +215,70 @@ export default {
             alert("Le joueur "+precedentPlayeurRow+" a gagné");
             return;
           }
+
+        var nbCardDiagonal1 = 0;
+        var nbCardDiagonal2 = 0;
+        var nbCardDiagonal3 = 0;
+        var nbCardDiagonal4 = 0;
+        var precedentPlayeurDiagonal1 = null;
+        var precedentPlayeurDiagonal2 = null;
+        var precedentPlayeurDiagonal3 = null;
+        var precedentPlayeurDiagonal4 = null;
+        for(var v = 0; v< 11;v++){
+          
+          if(i-v>0 && j-v>0 && this.cardPlayed[i-v][i-v].isPlayed && (precedentPlayeurDiagonal1 == null || precedentPlayeurDiagonal1 == this.cardPlayed[i-v][j-v].playeur)){
+            nbCardDiagonal1++;
+            precedentPlayeurDiagonal1 = this.cardPlayed[i-v][j-v].playeur;
+          }else{
+            nbCardDiagonal1 = 0;
+            precedentPlayeurDiagonal1 = null;
+          }
+
+          if((nbCardDiagonal1>= 5 && this.nbPlayeur == 2) || (nbCardDiagonal1>= 4 &&  this.nbPlayeur > 2) ){
+            alert("Le joueur "+precedentPlayeurDiagonal1+" a gagné");
+            return;
+          }
+
+          if(i+v<11 && j+v<11 && this.cardPlayed[i+v][j+v].isPlayed && (precedentPlayeurDiagonal2 == null || precedentPlayeurDiagonal2 == this.cardPlayed[i+v][j+v].playeur)){
+            nbCardDiagonal2++;
+            precedentPlayeurDiagonal2 = this.cardPlayed[i+v][j+v].playeur;
+          }else{
+            nbCardDiagonal2 = 0;
+            precedentPlayeurDiagonal2 = null;
+          }
+
+          if((nbCardDiagonal2>= 5 && this.nbPlayeur == 2) || (nbCardDiagonal2>= 4 &&  this.nbPlayeur > 2) ){
+            alert("Le joueur "+precedentPlayeurDiagonal2+" a gagné");
+            return;
+          }
+
+          if(i+v<11 && j-v>0 && this.cardPlayed[i+v][j-v].isPlayed && (precedentPlayeurDiagonal3 == null || precedentPlayeurDiagonal3 == this.cardPlayed[i+v][j-v].playeur)){
+            nbCardDiagonal3++;
+            precedentPlayeurDiagonal3 = this.cardPlayed[i+v][j-v].playeur;
+          }else{
+            nbCardDiagonal3 = 0;
+            precedentPlayeurDiagonal3 = null;
+          }
+
+          if((nbCardDiagonal3>= 5 && this.nbPlayeur == 2) || (nbCardDiagonal3>= 4 &&  this.nbPlayeur > 2) ){
+            alert("Le joueur "+precedentPlayeurDiagonal3+" a gagné");
+            return;
+          }
+
+          if(i-v>0 && j+v<11 && this.cardPlayed[i-v][j+v].isPlayed && (precedentPlayeurDiagonal4 == null || precedentPlayeurDiagonal4 == this.cardPlayed[i-v][j+v].playeur)){
+            nbCardDiagonal4++;
+            precedentPlayeurDiagonal4 = this.cardPlayed[i-v][j+v].playeur;
+          }else{
+            nbCardDiagonal4 = 0;
+            precedentPlayeurDiagonal4 = null;
+          }
+
+          if((nbCardDiagonal4>= 5 && this.nbPlayeur == 2) || (nbCardDiagonal4>= 4 &&  this.nbPlayeur > 2) ){
+            alert("Le joueur "+precedentPlayeurDiagonal4+" a gagné");
+            return;
+          }
         }
+      }
       }
     }
   }
