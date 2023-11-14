@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "sqlite3": "^5.1.6",
     "vue": "^3.3.4",
     "vuetify-use-dialog": "^0.6.2"
   },
