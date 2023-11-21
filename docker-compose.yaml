@@ -1,0 +1,22 @@
+version: '1.0'
+services:
+  web:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - mongo
+  mongo:
+    image: "mongo:latest"
+    ports:
+      - "27017:27017"
+    volumes:
+      - type: bind
+        source: ./mongo_data
+        target: /mongo_data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+
