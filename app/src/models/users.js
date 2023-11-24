@@ -2,17 +2,17 @@ var dbSqlite = require('./sqliteConnection');
 
 var users = function (){
 
-    this.getUser = function(id, callback){
+    this.getUserSqlite = function(id, callback){
         var sql = "SELECT * FROM Users WHERE userId = ?";
         dbSqlite.all(sql, [id], callback);
     };
 
-    this.getUserByName = function(name,callback){
-        var sql = "SELECT * FROM Users WHERE userName = ?";
+    this.getUserByNameSqlite = function(name,callback){
+        var sql = "SELECT * FROM Users WHERE nameUser = ?";
         dbSqlite.all(sql, [name], callback);
     }
 
-    this.addUser = function(values, callback){
+    this.addUserSqlite = function(values, callback){
         var sql = "INSERT INTO Users(nameUser) VALUES (?)";
         dbSqlite.run(sql, [values], callback);
     }

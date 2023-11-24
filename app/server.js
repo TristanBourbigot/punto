@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const users = require("./src/models/users");
+const users = require("./src/controler/users");
 
 const app = express();
 
@@ -18,8 +18,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // simple route
-app.get("/", (req, res) => {
-  users.addUser("test", (err) => {
+app.get("/addUserSqlite", (req, res) => {
+  users.addUserSqlite("test2", (err) => {
     if (err) {
       console.error(err.message);
     }else{
