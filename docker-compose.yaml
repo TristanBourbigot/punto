@@ -1,13 +1,14 @@
 version: '1.0'
 services:
-  web:
-    build:
-      context: ./app
-      dockerfile: Dockerfile
-    ports:
-      - "80:80"
-    depends_on:
-      - mongo
+#   web:
+#     build:
+#       context: ./app
+#       dockerfile: Dockerfile
+#     ports:
+#       - "80:80"
+#     depends_on:
+#       - mongo
+#       - mysql
   mongo:
     image: "mongo:latest"
     ports:
@@ -20,3 +21,13 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
 
+  mysql:
+    image: mysql
+    ports:
+      - "3330:3330"
+    volumes:
+      - type: bind
+        source: ./mysql_data
+        target: /mysql_data/db
+    environment:
+      MYSQL_ROOT_PASSWORD: root

@@ -13,8 +13,8 @@ var users = function (){
     }
 
     this.addUser = function(values, callback){
-        var sql = "INSERT INTO Users(userId,userName) VALUES (?,?)";
-        dbSqlite.run(sql, values, callback);
+        var sql = "INSERT INTO Users(nameUser) VALUES (?)";
+        dbSqlite.run(sql, [values], callback);
     }
 
 }

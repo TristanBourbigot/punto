@@ -13,11 +13,11 @@ var party = function (){
     }
 
     this.addParty = function(values, callback){
-        var sql = "INSERT INTO Party(partyId,winnerId) VALUES (?,?)";
-        dbSqlite.run(sql, values, callback);
+        var sql = "INSERT INTO Party(winnerId) VALUES (?)";
+        dbSqlite.run(sql, [values], callback);
     }
 }
 
 
-var users = new users();
-module.exports = users;
+var party = new party();
+module.exports = party;

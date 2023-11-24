@@ -30,5 +30,5 @@ var partyUsers = function (){
 }
 
 
-var users = new users();
-module.exports = users;
+var partyUsers = new partyUsers();
+module.exports = partyUsers;

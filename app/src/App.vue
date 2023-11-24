@@ -91,6 +91,7 @@ export default {
           number[0].splice(randomNbP1, 1);
           number[1].splice(randomNbP2, 1);
           number[2].splice(randomNbP3, 1);
+
         }
       }else {
         this.nbCard = 8;
