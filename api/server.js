@@ -11,14 +11,17 @@ var corsOptions = {
 
 app.use(cors(corsOptions));
 
-// parse requests of content-type - application/json
-app.use(bodyParser.json());
-
-// parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.raw());
 
 // simple route
-app.post("/addUserSqlite", (req, res) => {
+app.post("/addUserSqlite", (req, res,next) => {
+  if(!req.body.name){
+    return res.status(400).send({
+        message: "Name can not be empty"
+    });
+  }
   users.addUserSqlite(req.body.name, (err) => {
     if (err) {
       console.error(err.message);
@@ -26,11 +29,11 @@ app.post("/addUserSqlite", (req, res) => {
       console.log('Connected to the punto SQLITE database.');
     }
   });
-  res.json({ message: "Welcome to punto application." });
+  res.json({ message: "data insert", data: req.body.name , status: 200});
 });
 
 app.get("/addUserMysql", (req, res) => {
-  users.addUserSqlite("test2", (err) => {
+  users.addUserSqlite("test3", (err) => {
     if (err) {
       console.error(err.message);
     }else{
