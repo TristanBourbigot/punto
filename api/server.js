@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const users = require("./src/controler/users");
+const users = require("./controler/users");
 
 const app = express();
 
@@ -18,7 +18,18 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // simple route
-app.get("/addUserSqlite", (req, res) => {
+app.post("/addUserSqlite", (req, res) => {
+  users.addUserSqlite(req.body.name, (err) => {
+    if (err) {
+      console.error(err.message);
+    }else{
+      console.log('Connected to the punto SQLITE database.');
+    }
+  });
+  res.json({ message: "Welcome to punto application." });
+});
+
+app.get("/addUserMysql", (req, res) => {
   users.addUserSqlite("test2", (err) => {
     if (err) {
       console.error(err.message);
@@ -28,6 +39,8 @@ app.get("/addUserSqlite", (req, res) => {
   });
   res.json({ message: "Welcome to punto application." });
 });
+
+
 
 // set port, listen for requests
 const PORT = process.env.PORT || 4000;

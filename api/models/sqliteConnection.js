@@ -4,7 +4,7 @@ class sqlite_connection{
     constructor(){
         
 
-        this.db = new sqlite3.Database('./src/data/sqlite/punto_sqlite.db', (err) => {
+        this.db = new sqlite3.Database('./data/sqlite/punto_sqlite.db', (err) => {
 
             if (err) {
 
