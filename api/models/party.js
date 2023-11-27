@@ -21,7 +21,6 @@ var party = function (){
         dbSqlite.run(sql, [values], callback);
     }
 
-    
     this.use = function(callback){
         var sql7 = "USE punto;";
         dbMysql.query(sql7, callback);

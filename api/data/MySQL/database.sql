@@ -3,7 +3,7 @@ USE punto;
 
 CREATE TABLE Users(
     userId int NOT NULL AUTO_INCREMENT,
-    username Varchar(255) NOT NULL,
+    nameUser Varchar(255) NOT NULL,
     PRIMARY KEY(userId)
 );
 

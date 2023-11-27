@@ -10,13 +10,13 @@ services:
 #       - mongo
 #       - mysql
   mongo:
-    image: "mongo:latest"
+    image: mongo
     ports:
       - "27017:27017"
+
     volumes:
-      - type: bind
-        source: ./mongo_data
-        target: /mongo_data/db
+      - mongo_data:/data/db
+
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
@@ -33,3 +33,7 @@ services:
         target: /mysql_data/db
     environment:
       MYSQL_ROOT_PASSWORD: root
+
+volumes:
+  mongo_data: 
+  mysql_data:
