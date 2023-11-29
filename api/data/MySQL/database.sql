@@ -9,7 +9,7 @@ CREATE TABLE Users(
 
 CREATE TABLE Party(
     partyId int NOT NULL AUTO_INCREMENT,
-    partyName Varchar(255),
+    winnerId Varchar(255),
     PRIMARY KEY(partyId)
 );
 

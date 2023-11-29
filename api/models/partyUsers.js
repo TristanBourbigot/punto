@@ -1,44 +1,141 @@
 var dbSqlite = require('./sqliteConnection');
 var dbMysql = require('./mysqlConnection');
+var dbMongo = require('./mongoConnection');
 
 var partyUsers = function (){
 
-    this.getPartyUsers = function(partyId, userId, callback){
-        this.use(null)
+    // SQLite
+
+    this.getAllPartyUsersSqlite = function(callback){
+        var sql = "SELECT * FROM PartyUsers";
+        dbSqlite.all(sql, callback);
+    };
+    
+    this.getPartyUsersSqlite = function(partyId, userId, callback){
         var sql = "SELECT * FROM PartyUsers WHERE partyId = ? and userId = ?";
         dbSqlite.all(sql, [partyId,userId], callback);
     };
 
 
-    this.getPartyUsersByPartyId = function(partyId, callback){
-        this.use(null)
+    this.getPartyUsersByPartyIdSqlite = function(partyId, callback){
         var sql = "SELECT * FROM PartyUsers WHERE partyId = ?";
         dbSqlite.all(sql, [partyId], callback);
     };
 
-    this.getPartyUsersByUserId = function(userId, callback){
-        this.use(null)
+    this.getPartyUsersByUserIdSqlite = function(userId, callback){
         var sql = "SELECT * FROM PartyUsers WHERE userId = ?";
         dbSqlite.all(sql, [userId], callback);
     };
 
-    this.addPartyUsers = function(values, callback){
-        this.use(null)
+    this.addPartyUsersSqlite = function(values, callback){
         var sql = "INSERT INTO PartyUsers(partyId,userId) VALUES (?,?)";
         dbSqlite.run(sql, values, callback);
     }
 
-    this.countUserParty = function(id, callback){
-        this.use(null)
+    this.countUserPartySqlite = function(id, callback){
         var sql = "SELECT COUNT(*) FROM PartyUsers WHERE userId = ?"
         dbSqlite.run(sql, [id], callback);
     }
 
+    this.delPartyUsersSqlite = function(partyId, userId, callback){
+        var sql = "DELETE FROM PartyUsers WHERE partyId = ? and userId = ?";
+        dbSqlite.run(sql, [partyId,userId], callback);
+    }
+
+    this.delAllPartyUsersSqlite = function(callback){
+        var sql = "DELETE FROM PartyUsers";
+        dbSqlite.run(sql, callback);
+    }
+
+    // MySQL
     
+    this.getAllPartyUsersMySQL = function(callback){
+        this.use(null)
+        var sql = "SELECT * FROM PartyUsers";
+        dbMysql.query(sql, callback);
+    }
+
+    this.getPartyUsersMySQL = function(partyId, userId, callback){
+        this.use(null)
+        var sql = "SELECT * FROM PartyUsers WHERE partyId = ? and userId = ?";
+        dbMysql.query(sql, [partyId,userId], callback);
+    }
+
+    this.getPartyUsersByPartyIdMySQL = function(partyId, callback){
+        this.use(null)
+        var sql = "SELECT * FROM PartyUsers WHERE partyId = ?";
+        dbMysql.query(sql, [partyId], callback);
+    }
+
+    this.getPartyUsersByUserIdMySQL = function(userId, callback){   
+        this.use(null)
+        var sql = "SELECT * FROM PartyUsers WHERE userId = ?";
+        dbMysql.query(sql, [userId], callback);
+    }
+
+    this.addPartyUsersMySQL = function(values, callback){
+        this.use(null)
+        var sql = "INSERT INTO PartyUsers(partyId,userId) VALUES (?,?)";
+        dbMysql.query(sql, values, callback);
+    }
+
+    this.countUserPartyMySQL = function(id, callback){
+        this.use(null)
+        var sql = "SELECT COUNT(*) FROM PartyUsers WHERE userId = ?"
+        dbMysql.query(sql, [id], callback);
+    }
+
+    this.delPartyUsersMySQL = function(partyId, userId, callback){
+        this.use(null)
+        var sql = "DELETE FROM PartyUsers WHERE partyId = ? and userId = ?";
+        dbMysql.query(sql, [partyId,userId], callback);
+    }
+
+    this.delAllPartyUsersMySQL = function(callback){
+        this.use(null)
+        var sql = "DELETE FROM PartyUsers";
+        dbMysql.query(sql, callback);
+    }
+
     this.use = function(callback){
         var sql7 = "USE punto;";
         dbMysql.query(sql7, callback);
     };
+
+    // MongoDB
+
+    this.getAllPartyUsersMongo = async function(callback){
+       return await dbMongo.find('PartyUsers', {}, callback);
+    }
+    
+    this.getPartyUsersMongo = async function(partyId, userId, callback){
+        return await dbMongo.find('PartyUsers', {partyId: partyId, userId: userId}, callback);
+    }
+
+    this.getPartyUsersByPartyIdMongo = async function(partyId, callback){
+        return await dbMongo.find('PartyUsers', {partyId: partyId}, callback);
+    }
+
+    this.getPartyUsersByUserIdMongo = async function(userId, callback){
+        return await dbMongo.find('PartyUsers', {userId: userId}, callback);
+    }
+
+    this.addPartyUsersMongo = async function(values, callback){
+        return await dbMongo.insert('PartyUsers', values, callback);
+    }
+
+    this.countUserPartyMongo = async function(id, callback){
+        return await dbMongo.count('PartyUsers', {userId: id}, callback);
+    }
+
+    this.delPartyUsersMongo = async function(partyId, userId, callback){
+        return await dbMongo.remove('PartyUsers', {partyId: partyId, userId: userId}, callback);
+    }
+
+    this.delAllPartyUsersMongo = async function(callback){
+        return await dbMongo.remove('PartyUsers', {}, callback);
+    }
+
 }
 
 

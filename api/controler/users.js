@@ -4,6 +4,10 @@ var usersControler = function (){
 
     // SQLite
 
+    this.getAllUserSqlite = function(callback){
+        userModel.getAllUserSqlite(callback);
+    };
+
     this.getUserSqlite = function(id, callback){
         userModel.getUserSqlite(id, callback);
     };
@@ -22,7 +26,23 @@ var usersControler = function (){
         });
     }
 
+    this.updateUserSqlite = function(values, callback){
+        userModel.updateUserSqlite(values, callback);
+    }   
+
+    this.delUserSqlite = function(id, callback){
+        userModel.delUserSqlite(id, callback);
+    }
+
+    this.delAllUserSqlite = function(callback){
+        userModel.delAllUserSqlite(callback);
+    }
+
     // MySQL
+
+    this.getAllUserMySQL = function(callback){
+        userModel.getAllUserMySQL(callback);
+    };
 
     this.getUserMySQL = function(id, callback){
         userModel.getUserMySQL(id, callback);
@@ -42,7 +62,23 @@ var usersControler = function (){
         });
     }
 
+    this.updateUserMySQL = function(values, callback){
+        userModel.updateUserMySQL(values, callback);
+    }
+
+    this.delUserMySQL = function(id, callback){
+        userModel.delUserMySQL(id, callback);
+    }
+
+    this.delAllUserMySQL = function(callback){
+        userModel.delAllUserMySQL(callback);
+    }
+
     // MongoDB
+
+    this.getAllUserMongo = async function(){
+        return await userModel.getAllUserMongo();
+    };
 
     this.getUserMongo = async function(id){
         return await userModel.getUserMongo(id);
@@ -56,6 +92,18 @@ var usersControler = function (){
         data = await userModel.getUserByNameMongo(name);
         if(data.length > 0) return {message : "name all ready exist"}
         return await userModel.addUserMongo(name, callback);
+    }
+
+    this.updateUserMongo = async function(values, callback){
+        return await userModel.updateUserMongo(values, callback);
+    }
+
+    this.delUserMongo = async function(id, callback){
+        return await userModel.delUserMongo(id, callback);
+    }
+
+    this.delAllUserMongo = async function(callback){
+        return await userModel.delAllUserMongo(callback);
     }
 }
 
