@@ -1,6 +1,7 @@
 var dbSqlite = require('./sqliteConnection');
 var dbMysql = require('./mysqlConnection');
 var dbMongo = require('./mongoConnection');
+var ObjectId = require('mongodb').ObjectId;
 
 var party = function (){
 
@@ -27,7 +28,7 @@ var party = function (){
     }
 
     this.updatePartySqlite = function(values, callback){
-        var sql = "UPDATE Party SET partyId = ? WHERE winnerId = ?";
+        var sql = "UPDATE Party SET winnerId = ?  WHERE partyId = ?";
         dbSqlite.run(sql, values, callback);
     }
 
@@ -97,7 +98,7 @@ var party = function (){
     }
 
     this.getPartyMongo = async function(id){
-        return await dbMongo.collection("Party").find({partyId: id}).toArray();
+        return await dbMongo.collection("Party").find({_id: new ObjectId(id)}).toArray();
     }
 
     this.getPartyByWinnerMongo = async function(winnerId){
@@ -108,12 +109,12 @@ var party = function (){
         return await dbMongo.collection("Party").insertOne({winnerId : id});
     }
 
-    this.updatePartyMongo = async function(id){
-        return await dbMongo.collection("Party").updateOne({winnerId : id});
+    this.updatePartyMongo = async function(values){
+        return await dbMongo.collection("Party").updateOne({_id : new ObjectId(values[0])},{ $set:{winnerId : values[1]}});
     }
 
     this.delPartyMongo = async function(id){
-        return await dbMongo.collection("Party").deleteOne(id);
+        return await dbMongo.collection("Party").deleteOne({_id: new ObjectId(id)});
     }
 
     this.delAllPartyMongo = async function(){

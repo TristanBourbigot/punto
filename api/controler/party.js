@@ -17,7 +17,11 @@ var partyControler = function (){
     }
 
     this.addPartySqlite = function(values, callback){
-        partyModel.addPartySqlite(values, callback);
+        partyModel.addPartySqlite(values, function (err, data) {
+            partyModel.getAllPartySqlite(function (err, data) {
+                callback(null, data[data.length - 1]);
+            });
+        });
     }
 
     this.updatePartySqlite = function(values, callback){

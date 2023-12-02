@@ -1,5 +1,7 @@
 
 <script scoped>
+import axios from 'axios';
+
 
 export default {
   data : function() {
@@ -13,6 +15,8 @@ export default {
           playeurName : ["Joueur 1", "Joueur 2", "Joueur 3", "Joueur 4"],
           card : [[],[],[],[]],
           cardPlayed : [],
+          usersId : [[],[],[]],
+          partyId : [],
           dialog : true,
           rules: {
             required: value => !!value || 'Champs requis',
@@ -22,7 +26,7 @@ export default {
         }
   },
   methods :{
-    createGame(){
+    async createGame(){
       this.dialog = false;
       this.nbPlayeurToPlay = 0;
       this.playeurToPlay = this.playeurName[this.nbPlayeurToPlay];
@@ -120,6 +124,95 @@ export default {
       }
       this.cardToPlay = this.card[this.nbPlayeurToPlay][this.nbTurn];
 
+      for(var i = 0; i<this.nbPlayeur; i++){
+        await axios.post('http://localhost:4000/addUserSqlite', 
+        {
+          name : this.playeurName[i]
+        }).then((response) => {
+          if(response.data.id != null) this.usersId[0].push(response.data.id);
+          else this.usersId[0].push(response.data.userId);
+        }, (error) => {
+          console.log(error);
+        });
+
+        await axios.post('http://localhost:4000/addUserMysql', 
+        {
+          name : this.playeurName[i]
+        }).then((response) => {
+          if(response.data.insertId != null)this.usersId[1].push(response.data.insertId);
+          else this.usersId[1].push(response.data[0].userId);
+        }, (error) => {
+          console.log(error);
+        });
+
+        await axios.post('http://localhost:4000/addUserMongo', 
+        {
+          name : this.playeurName[i]
+        }).then((response) => {
+          if(response.data.insertId != null) this.usersId[2].push( response.data.insertedId);
+          else this.usersId[2].push(response.data.userId);
+        }, (error) => {
+          console.log(error);
+        });
+      }
+
+      await axios.post('http://localhost:4000/addPartySqlite', 
+      {
+      }).then(async (response) => {
+        this.partyId.push(response.data.partyId);
+        
+        await axios.post('http://localhost:4000/addPartyMysql', 
+        {
+        }).then(async (response) => {
+          this.partyId.push(response.data.insertId);
+          await axios.post('http://localhost:4000/addPartyMongo', 
+          {
+          }).then((response) => {
+            this.partyId.push(response.data.insertedId);
+          }, (error) => {
+            console.log(error);
+          });
+        }, (error) => {
+          console.log(error);
+        });
+      }, (error) => {
+        console.log(error);
+      });
+      
+
+      for(var i = 0; i<this.nbPlayeur; i++){
+        await axios.post('http://localhost:4000/addPartyUsersSqlite', 
+        {
+          userId : this.usersId[0][i],
+          partyId : this.partyId[0]
+        }).then((response) => {
+          // console.log(response);
+        }, 
+        (error) => {
+          console.log(error);
+        });
+
+        await axios.post('http://localhost:4000/addPartyUsersMysql', 
+        {
+          userId : this.usersId[1][i],
+          partyId : this.partyId[1]
+        }).then((response) => {
+          // console.log(response);
+        }, (error) => {
+          console.log(error);
+        });
+
+        await axios.post('http://localhost:4000/addPartyUsersMongo', 
+        {
+          userId : this.usersId[2][i],
+          partyId : this.partyId[2]
+        }).then((response) => {
+          // console.log(response);
+        }, (error) => {
+          console.log(error);
+        });
+      }
+
       this.chowPlayable();
     },
     playCard(idCol, i, j){
@@ -199,6 +292,7 @@ export default {
           }
 
           if((nbCardPlayerCol>= 5 && this.nbPlayeur == 2) || (nbCardPlayerCol>= 4 &&  this.nbPlayeur > 2) ){
+            this.updateWinner(precedentPlayeurCol);
             alert("Le joueur "+precedentPlayeurCol+" a gagné");
             return;
           }
@@ -212,7 +306,7 @@ export default {
           }
 
           if((nbCardPlayerRow>= 5 && this.nbPlayeur == 2) || (nbCardPlayerRow>= 4 &&  this.nbPlayeur > 2) ){
-            console.log(nbCardPlayerRow);
+            this.updateWinner(precedentPlayeurRow);
             alert("Le joueur "+precedentPlayeurRow+" a gagné");
             return;
           }
@@ -236,6 +330,7 @@ export default {
           }
 
           if((nbCardDiagonal1>= 5 && this.nbPlayeur == 2) || (nbCardDiagonal1>= 4 &&  this.nbPlayeur > 2) ){
+            this.updateWinner(precedentPlayeurDiagonal1);
             alert("Le joueur "+precedentPlayeurDiagonal1+" a gagné");
             return;
           }
@@ -249,6 +344,7 @@ export default {
           }
 
           if((nbCardDiagonal2>= 5 && this.nbPlayeur == 2) || (nbCardDiagonal2>= 4 &&  this.nbPlayeur > 2) ){
+            this.updateWinner(precedentPlayeurDiagonal2);
             alert("Le joueur "+precedentPlayeurDiagonal2+" a gagné");
             return;
           }
@@ -262,6 +358,7 @@ export default {
           }
 
           if((nbCardDiagonal3>= 5 && this.nbPlayeur == 2) || (nbCardDiagonal3>= 4 &&  this.nbPlayeur > 2) ){
+            this.updateWinner(precedentPlayeurDiagonal3);
             alert("Le joueur "+precedentPlayeurDiagonal3+" a gagné");
             return;
           }
@@ -275,12 +372,44 @@ export default {
           }
 
           if((nbCardDiagonal4>= 5 && this.nbPlayeur == 2) || (nbCardDiagonal4>= 4 &&  this.nbPlayeur > 2) ){
+            this.updateWinner(precedentPlayeurDiagonal4);
             alert("Le joueur "+precedentPlayeurDiagonal4+" a gagné");
             return;
           }
         }
       }
       }
+    },
+    async updateWinner(winnerName){
+      await axios.put('http://localhost:4000/updatePartySqlite', 
+      {
+        winnerId : this.usersId[0][this.playeurName.indexOf(winnerName)],
+        id : this.partyId[0]
+      }).then((response) => {
+        // console.log(response);
+      }, (error) => {
+        console.log(error);
+      });
+
+      await axios.put('http://localhost:4000/updatePartyMysql', 
+      {
+        winnerId : this.usersId[1][this.playeurName.indexOf(winnerName)],
+        id : this.partyId[1]
+      }).then((response) => {
+        // console.log(response);
+      }, (error) => {
+        console.log(error);
+      });
+
+      await axios.put('http://localhost:4000/updatePartyMongo', 
+      {
+        winnerId : this.usersId[2][this.playeurName.indexOf(winnerName)],
+        id : this.partyId[2]
+      }).then((response) => {
+        // console.log(response);
+      }, (error) => {
+        console.log(error);
+      });
     }
   }
 }

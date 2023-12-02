@@ -104,36 +104,36 @@ var partyUsers = function (){
 
     // MongoDB
 
-    this.getAllPartyUsersMongo = async function(callback){
-       return await dbMongo.find('PartyUsers', {}, callback);
+    this.getAllPartyUsersMongo = async function(){
+       return await dbMongo.collection("PartyUsers").find({});
     }
     
-    this.getPartyUsersMongo = async function(partyId, userId, callback){
-        return await dbMongo.find('PartyUsers', {partyId: partyId, userId: userId}, callback);
+    this.getPartyUsersMongo = async function(partyId, userId){
+        return await dbMongo.collection("PartyUsers").find({partyId: partyId, userId: userId});
     }
 
-    this.getPartyUsersByPartyIdMongo = async function(partyId, callback){
-        return await dbMongo.find('PartyUsers', {partyId: partyId}, callback);
+    this.getPartyUsersByPartyIdMongo = async function(partyId){
+        return await dbMongo.collection("PartyUsers").find({partyId: partyId});
     }
 
-    this.getPartyUsersByUserIdMongo = async function(userId, callback){
-        return await dbMongo.find('PartyUsers', {userId: userId}, callback);
+    this.getPartyUsersByUserIdMongo = async function(userId){
+        return await dbMongo.collection("PartyUsers").find( {userId: userId});
     }
 
-    this.addPartyUsersMongo = async function(values, callback){
-        return await dbMongo.insert('PartyUsers', values, callback);
+    this.addPartyUsersMongo = async function(values){
+        return await dbMongo.collection("PartyUsers").insertOne({partyId : values[0] ,userId: values[1]});
     }
 
-    this.countUserPartyMongo = async function(id, callback){
-        return await dbMongo.count('PartyUsers', {userId: id}, callback);
+    this.countUserPartyMongo = async function(id){
+        return await dbMongo.collection("PartyUsers").count({userId: id});
     }
 
-    this.delPartyUsersMongo = async function(partyId, userId, callback){
-        return await dbMongo.remove('PartyUsers', {partyId: partyId, userId: userId}, callback);
+    this.delPartyUsersMongo = async function(partyId, userId){
+        return await dbMongo.collection("PartyUsers").remove({partyId: partyId, userId: userId});
     }
 
     this.delAllPartyUsersMongo = async function(callback){
-        return await dbMongo.remove('PartyUsers', {}, callback);
+        return await dbMongo.collection("PartyUsers").remove({});
     }
 
 }

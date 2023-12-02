@@ -21,7 +21,11 @@ var partyUserControler = function (){
     }
 
     this.addPartyUsersSqlite = function(values, callback){
-        partyUserModel.addPartyUsersSqlite(values, callback);
+        partyUserModel.addPartyUsersSqlite(values, function (err, data) {
+            partyUserModel.getAllPartyUsersSqlite(function (err, data) {
+                callback(null, data[data.length - 1]);
+            });
+        });
     }
 
     this.countUserPartySqlite = function(id, callback){

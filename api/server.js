@@ -219,8 +219,8 @@ app.delete("/delAllPartySqlite", (req, res) => {
   });
 });
 
-app.get("/getAllPartyUserSqlite", (req, res) => {
-  partyUser.getAllPartyUserSqlite((err, data) => {
+app.get("/getAllPartyUsersSqlite", (req, res) => {
+  partyUser.getAllPartyUsersSqlite((err, data) => {
     if (err) {
       console.error(err.message);
     }else{
@@ -230,13 +230,13 @@ app.get("/getAllPartyUserSqlite", (req, res) => {
   });
 });
 
-app.get("/getPartyUserSqlite/:id", (req, res) => {
-  if(!req.params.id){
+app.get("/getPartyUsersSqlite", (req, res) => {
+  if(!req.body.userId || !req.body.partyId){
     return res.status(400).send({
         message: "Id can not be empty"
     });
   }
-  partyUser.getPartyUserSqlite(req.params.id, (err, data) => {
+  partyUser.getPartyUsersSqlite(req.body.partyId,req.body.id, (err, data) => {
     if (err) {
       console.error(err.message);
     }else{
@@ -246,24 +246,14 @@ app.get("/getPartyUserSqlite/:id", (req, res) => {
   });
 });
 
-app.get("/getPartyUserByWinnerSqlite/:winnerId", (req, res) => {
-  if(!req.params.winnerId){
+
+app.post("/addPartyUsersSqlite", (req, res) => {
+  if(!req.body.userId || !req.body.partyId){
     return res.status(400).send({
-        message: "WinnerId can not be empty"
+        message: "Id can not be empty"
     });
   }
-  partyUser.getPartyUserByWinnerSqlite(req.params.winnerId, (err, data) => {
-    if (err) {
-      console.error(err.message);
-    }else{
-      console.log('Connected to the punto SQLITE database.');
-    }
-    res.send(data);
-  });
-});
-
-app.post("/addPartyUserSqlite", (req, res) => {
-  partyUser.addPartyUserSqlite(req.body.winnerId, (err,data) => {
+  partyUser.addPartyUsersSqlite([req.body.partyId,req.body.userId], (err,data) => {
     if (err) {
       console.error(err.message);
     }else{
@@ -273,23 +263,8 @@ app.post("/addPartyUserSqlite", (req, res) => {
   });
 });
 
-app.put("/updatePartyUserSqlite", (req, res) => {
-  if(!req.body.winnerId || !req.body.id){
-    return res.status(400).send({
-        message: "WinnerId or IDcan not be empty"
-    });
-  }
-  partyUser.updatePartyUserSqlite([req.body.id,req.body.winnerId], (err,data) => {
-    if (err) {
-      console.error(err.message);
-    }else{
-      console.log('Connected to the punto SQLITE database.');
-      res.json(data);
-    }
-  });
-});
 
-app.delete("/delPartyUserSqlite/:id", (req, res) => {
+app.delete("/delPartyUserSqlite", (req, res) => {
   if(!req.params.id){
     return res.status(400).send({
         message: "Id can not be empty"
@@ -508,8 +483,8 @@ app.delete("/delAllPartyMysql", (req, res) => {
   });
 });
 
-app.get("/getAllPartyUserMysql", (req, res) => {
-  partyUser.getAllPartyUserMySQL((err, data) => {
+app.get("/getAllPartyUsersMySQL", (req, res) => {
+  partyUser.getAllPartyUsersMySQL((err, data) => {
     if (err) {
       console.error(err.message);
     }else{
@@ -519,13 +494,13 @@ app.get("/getAllPartyUserMysql", (req, res) => {
   });
 });
 
-app.get("/getPartyUserMysql/:id", (req, res) => {
-  if(!req.params.id){
+app.get("/getPartyUsersMySQL", (req, res) => {
+  if(!req.body.userId || !req.body.partyId){
     return res.status(400).send({
         message: "Id can not be empty"
     });
   }
-  partyUser.getPartyUserMySQL(req.params.id, (err, data) => {
+  partyUser.getPartyUsersMySQL( req.body.partyId, req.body.userId, (err, data) => {
     if (err) {
       console.error(err.message);
     }else{
@@ -536,8 +511,13 @@ app.get("/getPartyUserMysql/:id", (req, res) => {
 });
 
 
-app.post("/addPartyUserMysql", (req, res) => {
-  partyUser.addPartyUserMySQL(req.body.winnerId, (err,data) => {
+app.post("/addPartyUsersMysql", (req, res) => {
+  if(!req.body.userId || !req.body.partyId){
+    return res.status(400).send({
+        message: "Id can not be empty"
+    });
+  }
+  partyUser.addPartyUsersMySQL([req.body.partyId, req.body.userId], (err,data) => {
     if (err) {
       console.error(err.message);
     }else{
@@ -547,13 +527,13 @@ app.post("/addPartyUserMysql", (req, res) => {
   });
 });
 
-app.delete("/delPartyUserMysql/:id", (req, res) => {
-  if(!req.params.id){
+app.delete("/delPartyUserMysql", (req, res) => {
+  if(!req.body.userId || !req.body.partyId){
     return res.status(400).send({
         message: "Id can not be empty"
     });
   }
-  partyUser.delPartyUserMySQL(req.params.id, (err,data) => {
+  partyUser.delPartyUserMySQL(req.body.partyId , req.body.userId, (err,data) => {
     if (err) {
       console.error(err.message);
     }else{
@@ -693,43 +673,38 @@ app.delete("/delAllPartyMongo", async (req,res) => {
   res.json(data);
 });
 
-app.get("/getAllPartyUserMongo", async (req, res) => {
-  data = await partyUser.getAllPartyUserMongo();
+app.get("/getAllPartyUsersMongo", async (req, res) => {
+  data = await partyUser.getAllPartyUsersMongo();
   res.send(data);
 });
 
-app.get("/getPartyUserMongo/:id", async (req, res) => {
-  if(!req.params.id){
+app.get("/getPartyUserMongo", async (req, res) => {
+  if(!req.body.partyId || !req.body.userId){
     return res.status(400).send({
         message: "Id can not be empty"
     });
   }
-  data = await partyUser.getPartyUserMongo(req.params.id);
+  data = await partyUser.getPartyUserMongo(req.body.partyId ,req.body.userId);
   res.send(data);
 });
 
-app.get("/getPartyUserByWinnerMongo/:winnerId", async (req, res) => {
-  if(!req.params.winnerId){
+app.post("/addPartyUsersMongo", async (req,res) => {
+  if(!req.body.partyId || !req.body.userId){
     return res.status(400).send({
-        message: "WinnerId can not be empty"
+        message: "Id can not be empty"
     });
   }
-  data = await partyUser.getPartyUserByWinnerMongo(req.params.winnerId);
-  res.send(data);
-});
-
-app.post("/addPartyUserMongo", async (req,res) => {
-  data = await partyUser.addPartyUserMongo(req.body.winnerId);
+  data = await partyUser.addPartyUsersMongo([req.body.partyId ,req.body.userId]);
   res.json(data);
 });
 
-app.delete("/delPartyUserMongo/:id", async (req,res) => {
-  if(!req.params.id){
+app.delete("/delPartyUserMongo", async (req,res) => {
+  if(!req.body.partyId || !req.body.userId){
     return res.status(400).send({
         message: "Id can not be empty"
     });
   }
-  data = await partyUser.delPartyUserMongo(req.params.id);
+  data = await partyUser.delPartyUserMongo(req.body.partyId ,req.body.userId);
   res.json(data);
 });
 

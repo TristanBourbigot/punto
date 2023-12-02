@@ -21,7 +21,9 @@ var usersControler = function (){
             if (data.length > 0) {
                 callback(null, data);
             } else {
-                userModel.addUserSqlite(values, callback);
+                userModel.addUserSqlite(values, function (err, data) {
+                    userModel.getUserByNameSqlite(values, callback)
+                });
             }
         });
     }
@@ -90,7 +92,7 @@ var usersControler = function (){
 
     this.addUserMongo = async function(name, callback){
         data = await userModel.getUserByNameMongo(name);
-        if(data.length > 0) return {message : "name all ready exist"}
+        if(data.length > 0) return {userId : data[0]._id, name : data[0].nameUser}
         return await userModel.addUserMongo(name, callback);
     }
 
