@@ -1,14 +1,27 @@
 version: '1.0'
 services:
-#   web:
-#     build:
-#       context: ./app
-#       dockerfile: Dockerfile
-#     ports:
-#       - "80:80"
-#     depends_on:
-#       - mongo
-#       - mysql
+  # web:
+  #   build:
+  #     context: ./app
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "80:80"
+  #   networks:
+  #     - your-network
+  #   depends_on:
+  #     - mongo
+  #     - mysql
+    
+  # api:
+  #   build:
+  #     context: ./api
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "4000:4000"
+  #   depends_on:
+  #     - mongo
+  #     - mysql
+
   mongo:
     image: mongo
     ports:
@@ -37,3 +50,7 @@ services:
 volumes:
   mongo_data: 
   mysql_data:
+
+networks:
+  your-network:
+    driver: bridge

@@ -77,36 +77,36 @@ var partyUserControler = function (){
 
     // MongoDB
 
-    this.getAllPartyUsersMongo = function(callback){
-        partyUserModel.getAllPartyUsersMongo(callback);
+    this.getAllPartyUsersMongo = async function(){
+        return await partyUserModel.getAllPartyUsersMongo();
     }
 
-    this.getPartyUsersMongo = function(partyId, userId, callback){
-        partyUserModel.getPartyUsersMongo(partyId, userId, callback);
+    this.getPartyUsersMongo = async function(partyId, userId){
+        return await partyUserModel.getPartyUsersMongo(partyId, userId);
     }
 
-    this.getPartyUsersByPartyIdMongo = function(partyId, callback){
-        partyUserModel.getPartyUsersByPartyIdMongo(partyId, callback);
+    this.getPartyUsersByPartyIdMongo = async function(partyId){
+        return await partyUserModel.getPartyUsersByPartyIdMongo(partyId);
     }
 
-    this.getPartyUsersByUserIdMongo = function(userId, callback){
-        partyUserModel.getPartyUsersByUserIdMongo(userId, callback);
+    this.getPartyUsersByUserIdMongo = async function(userId){
+        return await partyUserModel.getPartyUsersByUserIdMongo(userId);
     }
 
-    this.addPartyUsersMongo = function(values, callback){
-        partyUserModel.addPartyUsersMongo(values, callback);
+    this.addPartyUsersMongo = async function(values){
+        return await partyUserModel.addPartyUsersMongo(values);
     }
 
-    this.countUserPartyMongo = function(id, callback){
-        partyUserModel.countUserPartyMongo(id, callback);
+    this.countUserPartyMongo = async function(id){
+        return await partyUserModel.countUserPartyMongo(id);
     }
 
-    this.delPartyUsersMongo = function(partyId, userId, callback){
-        partyUserModel.delPartyUsersMongo(partyId, userId, callback);
+    this.delPartyUsersMongo = async function(partyId, userId){
+        return await partyUserModel.delPartyUsersMongo(partyId, userId);
     }
 
-    this.delAllPartyUsersMongo = function(callback){
-        partyUserModel.delAllPartyUsersMongo(callback);
+    this.delAllPartyUsersMongo = async function(){
+        return await partyUserModel.delAllPartyUsersMongo();
     }
 
 }

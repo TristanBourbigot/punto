@@ -182,7 +182,7 @@ app.put("/updatePartySqlite", (req, res) => {
         message: "WinnerId or IDcan not be empty"
     });
   }
-  party.updatePartySqlite([req.body.id,req.body.winnerId], (err,data) => {
+  party.updatePartySqlite([req.body.winnerId,req.body.id], (err,data) => {
     if (err) {
       console.error(err.message);
     }else{
@@ -280,6 +280,16 @@ app.delete("/delPartyUserSqlite", (req, res) => {
   });
 });
 
+app.delete("/delAllPartyUserSqlite", (req, res) => {
+  partyUser.delAllPartyUsersSqlite((err,data) => {
+    if (err) {
+      console.error(err.message);
+    }else{
+      console.log('Connected to the punto SQLITE database.');
+      res.json(data);
+    }
+  });
+});
 
 // MySQL
 
@@ -544,7 +554,7 @@ app.delete("/delPartyUserMysql", (req, res) => {
 });
 
 app.delete("/delAllPartyUserMysql", (req, res) => {
-  partyUser.delAllPartyUserMySQL((err,data) => {
+  partyUser.delAllPartyUsersMySQL((err,data) => {
     if (err) {
       console.error(err.message);
     }else{
@@ -709,7 +719,7 @@ app.delete("/delPartyUserMongo", async (req,res) => {
 });
 
 app.delete("/delAllPartyUserMongo", async (req,res) => {
-  data = await partyUser.delAllPartyUserMongo();
+  data = await partyUser.delAllPartyUsersMongo();
   res.json(data);
 });
 

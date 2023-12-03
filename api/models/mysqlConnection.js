@@ -19,7 +19,7 @@ class mysqlConnection{
         });
 
         this.connection.connect(function(err) {
-            if (err) throw err;
+            if (err) console.log(err);
             else console.log("Connecter a la base de donnee");
         });
     }

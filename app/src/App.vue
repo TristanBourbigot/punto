@@ -151,10 +151,9 @@ export default {
                 await axios.post('http://localhost:4000/addUserMongo', {
                     name: this.playeurName[i]
                 }).then((response) => {
-                    if (response.data.insertId != null)
+                    if (response.data.insertedId != null){
                         this.usersId[2].push(response.data.insertedId);
-                    else
-                        this.usersId[2].push(response.data.userId);
+                    }else this.usersId[2].push(response.data.userId);
                 }, (error) => {
                     console.log(error);
                 });
@@ -191,6 +190,7 @@ export default {
                 }, (error) => {
                     console.log(error);
                 });
+                console.log(this.usersId[2][i], this.partyId[2])
                 await axios.post('http://localhost:4000/addPartyUsersMongo', {
                     userId: this.usersId[2][i],
                     partyId: this.partyId[2]
@@ -374,7 +374,8 @@ export default {
                 winnerId: this.usersId[0][this.playeurName.indexOf(winnerName)],
                 id: this.partyId[0]
             }).then((response) => {
-                // console.log(response);
+                console.log(this.usersId[0][this.playeurName.indexOf(winnerName)], this.partyId[0])
+                console.log(response);
             }, (error) => {
                 console.log(error);
             });

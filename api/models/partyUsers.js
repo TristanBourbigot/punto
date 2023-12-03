@@ -105,19 +105,19 @@ var partyUsers = function (){
     // MongoDB
 
     this.getAllPartyUsersMongo = async function(){
-       return await dbMongo.collection("PartyUsers").find({});
+       return await dbMongo.collection("PartyUsers").find({}).toArray();
     }
     
     this.getPartyUsersMongo = async function(partyId, userId){
-        return await dbMongo.collection("PartyUsers").find({partyId: partyId, userId: userId});
+        return await dbMongo.collection("PartyUsers").find({partyId: partyId, userId: userId}).toArray();
     }
 
     this.getPartyUsersByPartyIdMongo = async function(partyId){
-        return await dbMongo.collection("PartyUsers").find({partyId: partyId});
+        return await dbMongo.collection("PartyUsers").find({partyId: partyId}).toArray();
     }
 
     this.getPartyUsersByUserIdMongo = async function(userId){
-        return await dbMongo.collection("PartyUsers").find( {userId: userId});
+        return await dbMongo.collection("PartyUsers").find( {userId: userId}).toArray();
     }
 
     this.addPartyUsersMongo = async function(values){
@@ -129,11 +129,11 @@ var partyUsers = function (){
     }
 
     this.delPartyUsersMongo = async function(partyId, userId){
-        return await dbMongo.collection("PartyUsers").remove({partyId: partyId, userId: userId});
+        return await dbMongo.collection("PartyUsers").deleteMany({partyId: partyId, userId: userId});
     }
 
-    this.delAllPartyUsersMongo = async function(callback){
-        return await dbMongo.collection("PartyUsers").remove({});
+    this.delAllPartyUsersMongo = async function(){
+        return await dbMongo.collection("PartyUsers").deleteMany({});
     }
 
 }
