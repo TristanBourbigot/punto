@@ -276,11 +276,14 @@ export default {
                 var nbCardPlayerCol = 0;
                 var nbCardPlayerRow = 0;
                 var precedentPlayeurCol = null;
+                var precedentColorCol = null;
                 var precedentPlayeurRow = null;
+                var precedentColorRow = null;
                 for (var j = 0; j < 11; j++) {
-                    if (this.cardPlayed[i][j].isPlayed && (precedentPlayeurCol == null || precedentPlayeurCol == this.cardPlayed[i][j].playeur)) {
+                    if (this.cardPlayed[i][j].isPlayed && (precedentPlayeurCol == null || (precedentPlayeurCol == this.cardPlayed[i][j].playeur && precedentColorCol == this.cardPlayed[i][j].Color))) {
                         nbCardPlayerCol++;
                         precedentPlayeurCol = this.cardPlayed[i][j].playeur;
+                        precedentColorCol = this.cardPlayed[i][j].Color;
                     }
                     else {
                         nbCardPlayerCol = 0;
@@ -291,7 +294,7 @@ export default {
                         alert("Le joueur " + precedentPlayeurCol + " a gagné");
                         return;
                     }
-                    if (this.cardPlayed[j][i].isPlayed && (precedentPlayeurRow == null || precedentPlayeurRow == this.cardPlayed[j][i].playeur)) {
+                    if (this.cardPlayed[j][i].isPlayed && (precedentPlayeurRow == null || (precedentPlayeurRow == this.cardPlayed[j][i].playeur && precedentColorRow == this.cardPlayed[j][i].Color))) {
                         nbCardPlayerRow++;
                         precedentPlayeurRow = this.cardPlayed[j][i].playeur;
                     }
@@ -309,13 +312,18 @@ export default {
                     var nbCardDiagonal3 = 0;
                     var nbCardDiagonal4 = 0;
                     var precedentPlayeurDiagonal1 = null;
+                    var precedentColorDiagonal1 = null;
                     var precedentPlayeurDiagonal2 = null;
+                    var precedentColorDiagonal2 = null;
                     var precedentPlayeurDiagonal3 = null;
+                    var precedentColorDiagonal3 = null;
                     var precedentPlayeurDiagonal4 = null;
+                    var precedentColorDiagonal4 = null;
                     for (var v = 0; v < 11; v++) {
-                        if (i - v > 0 && j - v > 0 && this.cardPlayed[i - v][i - v].isPlayed && (precedentPlayeurDiagonal1 == null || precedentPlayeurDiagonal1 == this.cardPlayed[i - v][j - v].playeur)) {
+                        if (i - v > 0 && j - v > 0 && this.cardPlayed[i - v][i - v].isPlayed && (precedentPlayeurDiagonal1 == null || (precedentPlayeurDiagonal1 == this.cardPlayed[i - v][j - v].playeur && precedentColorDiagonal1 == this.cardPlayed[i - v][j - v].Color))) {
                             nbCardDiagonal1++;
                             precedentPlayeurDiagonal1 = this.cardPlayed[i - v][j - v].playeur;
+                            precedentColorDiagonal1 = this.cardPlayed[i - v][j - v].Color;
                         }
                         else {
                             nbCardDiagonal1 = 0;
@@ -326,9 +334,10 @@ export default {
                             alert("Le joueur " + precedentPlayeurDiagonal1 + " a gagné");
                             return;
                         }
-                        if (i + v < 11 && j + v < 11 && this.cardPlayed[i + v][j + v].isPlayed && (precedentPlayeurDiagonal2 == null || precedentPlayeurDiagonal2 == this.cardPlayed[i + v][j + v].playeur)) {
+                        if (i + v < 11 && j + v < 11 && this.cardPlayed[i + v][j + v].isPlayed && (precedentPlayeurDiagonal2 == null || (precedentPlayeurDiagonal2 == this.cardPlayed[i + v][j + v].playeur && precedentColorDiagonal2 == this.cardPlayed[i + v][j + v].Color))) {
                             nbCardDiagonal2++;
                             precedentPlayeurDiagonal2 = this.cardPlayed[i + v][j + v].playeur;
+                            precedentColorDiagonal2 = this.cardPlayed[i + v][j + v].Color;
                         }
                         else {
                             nbCardDiagonal2 = 0;
@@ -339,9 +348,10 @@ export default {
                             alert("Le joueur " + precedentPlayeurDiagonal2 + " a gagné");
                             return;
                         }
-                        if (i + v < 11 && j - v > 0 && this.cardPlayed[i + v][j - v].isPlayed && (precedentPlayeurDiagonal3 == null || precedentPlayeurDiagonal3 == this.cardPlayed[i + v][j - v].playeur)) {
+                        if (i + v < 11 && j - v > 0 && this.cardPlayed[i + v][j - v].isPlayed && (precedentPlayeurDiagonal3 == null || (precedentPlayeurDiagonal3 == this.cardPlayed[i + v][j - v].playeur && precedentColorDiagonal3 == this.cardPlayed[i + v][j - v].Color))) {
                             nbCardDiagonal3++;
                             precedentPlayeurDiagonal3 = this.cardPlayed[i + v][j - v].playeur;
+                            precedentColorDiagonal3 = this.cardPlayed[i + v][j - v].Color;
                         }
                         else {
                             nbCardDiagonal3 = 0;
@@ -352,7 +362,7 @@ export default {
                             alert("Le joueur " + precedentPlayeurDiagonal3 + " a gagné");
                             return;
                         }
-                        if (i - v > 0 && j + v < 11 && this.cardPlayed[i - v][j + v].isPlayed && (precedentPlayeurDiagonal4 == null || precedentPlayeurDiagonal4 == this.cardPlayed[i - v][j + v].playeur)) {
+                        if (i - v > 0 && j + v < 11 && this.cardPlayed[i - v][j + v].isPlayed && (precedentPlayeurDiagonal4 == null || (precedentPlayeurDiagonal4 == this.cardPlayed[i - v][j + v].playeur && precedentColorDiagonal4 == this.cardPlayed[i - v][j + v].Color))) {
                             nbCardDiagonal4++;
                             precedentPlayeurDiagonal4 = this.cardPlayed[i - v][j + v].playeur;
                         }
