@@ -96,6 +96,32 @@ var partyControler = function (){
         return await partyModel.delAllPartyMongo();
     }
 
+    // Neo4j
+
+    this.getAllPartyNeo4j = async function(){
+        return await partyModel.getAllPartyNeo4j();
+    }
+
+    this.getPartyNeo4j = async function(id){
+        return await partyModel.getPartyNeo4j(id);
+    }
+
+    this.addPartyNeo4j = async function(){
+        return await partyModel.addPartyNeo4j();
+    }
+
+    this.updatePartyNeo4j = async function(values){
+        return await partyModel.updatePartyNeo4j(values);
+    }
+
+    this.delPartyNeo4j = async function(id){
+        return await partyModel.delPartyNeo4j(id);
+    }
+
+    this.delAllPartyNeo4j = async function(){
+        return await partyModel.delAllPartyNeo4j();
+    }
+
 }
 
 

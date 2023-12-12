@@ -28,7 +28,7 @@ import '@mdi/font/css/materialdesignicons.css'
         totalUserItems: 0,
         totalPartyItems: 0,
         totalPartyUserItems: 0,
-        bdd : ['Sqlite', 'Mongo', 'Mysql'],
+        bdd : ['Sqlite', 'Mongo', 'Mysql', 'Neo4j'],
         selectedBdd: 'Sqlite',
         numberValue: 1000,
         userIdTmp: [],

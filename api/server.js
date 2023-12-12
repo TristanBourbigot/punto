@@ -723,6 +723,147 @@ app.delete("/delAllPartyUserMongo", async (req,res) => {
   res.json(data);
 });
 
+// Neo4j
+
+app.get("/getAllUserNeo4j", async (req, res) => {
+  data = await users.getAllUserNeo4j();
+  res.send(data);
+});
+
+app.get("/getUserNeo4j/:id", async (req, res) => {
+  if(!req.params.id){
+    return res.status(400).send({
+        message: "Id can not be empty"
+    });
+  }
+  data = await users.getUserNeo4j(req.params.id);
+  res.send(data);
+});
+
+app.get("/getUserByNameNeo4j/:name", async (req, res) => {
+  if(!req.params.name){
+    return res.status(400).send({
+        message: "Name can not be empty"
+    });
+  }
+  data = await users.getUserByNameNeo4j(req.params.name);
+  res.send(data);
+});
+
+app.post("/addUserNeo4j", async (req,res) => {
+  if(!req.body.name){
+    return res.status(400).send({
+        message: "Name can not be empty"
+    });
+  }
+  data = await users.addUserNeo4j(req.body.name);
+  res.json(data);
+});
+
+app.put("/updateUserNeo4j", async (req,res) => {
+  if(!req.body.name || !req.body.id){
+    return res.status(400).send({
+        message: "Name or IDcan not be empty"
+    });
+  }
+  data = await users.updateUserNeo4j([req.body.id,req.body.name]);
+  res.json(data);
+});
+
+app.delete("/delUserNeo4j/:id", async (req,res) => {
+  if(!req.params.id){
+    return res.status(400).send({
+        message: "Id can not be empty"
+    });
+  }
+  data = await users.delUserNeo4j(req.params.id);
+  res.json(data);
+});
+
+app.delete("/delAllUserNeo4j", async (req,res) => {
+  data = await users.delAllUserNeo4j();
+  res.json(data);
+});
+
+app.get("/getAllPartyNeo4j", async (req, res) => {
+  data = await party.getAllPartyNeo4j();
+  res.send(data);
+});
+
+app.get("/getPartyNeo4j/:id", async (req, res) => {
+  if(!req.params.id){
+    return res.status(400).send({
+        message: "Id can not be empty"
+    });
+  }
+  data = await party.getPartyNeo4j(req.params.id);
+  res.send(data);
+});
+
+app.post("/addPartyNeo4j", async (req,res) => {
+  data = await party.addPartyNeo4j();
+  res.json(data);
+});
+
+app.put("/updatePartyNeo4j", async (req,res) => {
+  if(req.body.winnerId !=0 && req.body.id!=0 && (!req.body.winnerId || !req.body.id)){
+    return res.status(400).send({
+        message: "WinnerId or IDcan not be empty"
+    });
+  }
+  data = await party.updatePartyNeo4j([req.body.id,req.body.winnerId]);
+  res.json(data);
+});
+
+app.delete("/delPartyNeo4j/:id", async (req,res) => {
+  if(!req.params.id){
+    return res.status(400).send({
+        message: "Id can not be empty"
+    });
+  }
+  data = await party.delPartyNeo4j(req.params.id);
+  res.json(data);
+});
+
+app.delete("/delAllPartyNeo4j", async (req,res) => {
+  data = await party.delAllPartyNeo4j();
+  res.json(data);
+});
+
+app.get("/getAllPartyUsersNeo4j", async (req, res) => {
+  data = await partyUser.getAllPartyUsersNeo4j();
+  res.send(data);
+});
+
+app.get("/getPartyUserNeo4j", async (req, res) => {
+  if(!req.body.partyId || !req.body.userId){
+    return res.status(400).send({
+        message: "Id can not be empty"
+    });
+  }
+  data = await partyUser.getPartyUserNeo4j(req.body.partyId ,req.body.userId);
+  res.send(data);
+});
+
+app.post("/addPartyUsersNeo4j", async (req,res) => {
+  data = await partyUser.addPartyUsersNeo4j([req.body.userId ,req.body.partyId]);
+  res.json(data);
+});
+
+app.delete("/delPartyUserNeo4j", async (req,res) => {
+  if(!req.body.partyId || !req.body.userId){
+    return res.status(400).send({
+        message: "Id can not be empty"
+    });
+  }
+  data = await partyUser.delPartyUserNeo4j(req.body.partyId ,req.body.userId);
+  res.json(data);
+});
+
+app.delete("/delAllPartyUserNeo4j", async (req,res) => {
+  data = await partyUser.delAllPartyUsersNeo4j();
+  res.json(data);
+});
 
 // set port, listen for requests
 const PORT = process.env.PORT || 4000;

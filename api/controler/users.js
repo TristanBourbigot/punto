@@ -107,6 +107,39 @@ var usersControler = function (){
     this.delAllUserMongo = async function(callback){
         return await userModel.delAllUserMongo(callback);
     }
+
+    // Neo4j
+
+    this.getAllUserNeo4j = async function(){
+        return await userModel.getAllUserNeo4j();
+    };
+
+    this.getUserNeo4j = async function(id){
+        return await userModel.getUserNeo4j(id);
+    };
+
+    this.getUserByNameNeo4j = async function(name){
+        return await userModel.getUserByNameNeo4j(name);
+    };
+
+    this.addUserNeo4j = async function(name, callback){
+        data = await userModel.getUserByNameNeo4j(name);
+        if(data.records.length > 0) return {userId : data.records[0]._fields[0].identity.low , name : data.records[0]._fields[0].properties.nameUser}
+        return await userModel.addUserNeo4j(name, callback);
+    }
+
+    this.updateUserNeo4j = async function(values, callback){
+        return await userModel.updateUserNeo4j(values, callback);
+    }
+
+    this.delUserNeo4j = async function(id, callback){
+        return await userModel.delUserNeo4j(id, callback);
+    }
+
+    this.delAllUserNeo4j = async function(callback){
+        return await userModel.delAllUserNeo4j(callback);
+    }
+    
 }
 
 

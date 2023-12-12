@@ -1,7 +1,7 @@
 var dbSqlite = require('./sqliteConnection');
 var dbMysql = require('./mysqlConnection');
 var dbMongo = require('./mongoConnection');
-
+var dbNeo4j = require('./neo4jConnection');
 
 var users = function (){
 
@@ -117,6 +117,37 @@ var users = function (){
 
     this.delAllUserMongo = async function(){
         return await dbMongo.collection('users').deleteMany({});
+    };
+
+    // Neo4j
+
+    this.getAllUserNeo4j = async function(){
+        return await dbNeo4j.run('MATCH (n:User) RETURN n');
+    };
+
+    this.getUserNeo4j = async function(id){
+        return await dbNeo4j.run('MATCH (n:User) WHERE ID(n) = $id RETURN n', {id: id});
+    };
+
+    this.getUserByNameNeo4j = async function(name){
+        return await dbNeo4j.run('MATCH (n:User) WHERE n.nameUser = $name RETURN n', {name: name});
+    };
+
+    this.addUserNeo4j = async function(name){
+        data = await dbNeo4j.run('CREATE (n:User {nameUser: $name}) RETURN n', {name: name});
+        return  {userId : data.records[0]._fields[0].identity.low, name : data.records[0]._fields[0].properties.nameUser};
+    };
+
+    this.updateUserNeo4j = async function(id, name){
+        return await dbNeo4j.run('MATCH (n:User) WHERE ID(n) = $id SET n.nameUser = $name RETURN n', {id: id, name: name});
+    };
+
+    this.delUserNeo4j = async function(id){
+        return await dbNeo4j.run('MATCH (n:User) WHERE ID(n) = $id DELETE n', {id: id});
+    };
+
+    this.delAllUserNeo4j = async function(){
+        return await dbNeo4j.run('MATCH (n:User) DELETE n');
     };
 }
 

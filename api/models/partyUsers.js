@@ -1,6 +1,7 @@
 var dbSqlite = require('./sqliteConnection');
 var dbMysql = require('./mysqlConnection');
 var dbMongo = require('./mongoConnection');
+var dbNeo4j = require('./neo4jConnection');
 
 var partyUsers = function (){
 
@@ -134,6 +135,37 @@ var partyUsers = function (){
 
     this.delAllPartyUsersMongo = async function(){
         return await dbMongo.collection("PartyUsers").deleteMany({});
+    }
+
+
+    // Neo4j
+
+    this.getAllPartyUsersNeo4j = async function(){
+        return await dbNeo4j.run('MATCH (u:User)-[:PLAY]->(p:Party) RETURN u,p');
+    }
+
+    this.getPartyUsersNeo4j = async function(partyId, userId){
+        return await dbNeo4j.run('MATCH (u:User)-[:PLAY]->(p:Party) WHERE ID(u) = $userId AND ID(p) = $partyId RETURN u,p', {userId: userId, partyId: partyId});
+    }
+
+    this.getPartyUsersByPartyIdNeo4j = async function(partyId){
+        return await dbNeo4j.run('MATCH (u:User)-[:PLAY]->(p:Party) WHERE ID(p) = $partyId RETURN u,p', {partyId: partyId});
+    }
+
+    this.getPartyUsersByUserIdNeo4j = async function(userId){
+        return await dbNeo4j.run('MATCH (u:User)-[:PLAY]->(p:Party) WHERE ID(u) = $userId RETURN u,p', {userId: userId});
+    }
+
+    this.addPartyUsersNeo4j = async function(values){
+        return await dbNeo4j.run('MATCH (u:User), (p:Party) WHERE ID(u) = $userId AND ID(p) = $partyId CREATE (u)-[:PLAY]->(p)', {userId: values[0], partyId: values[1]});
+    }
+
+    this.delPartyUsersNeo4j = async function(partyId, userId){
+        return await dbNeo4j.run('MATCH (u:User)-[r:PLAY]->(p:Party) WHERE ID(u) = $userId AND ID(p) = $partyId DELETE r', {userId: userId, partyId: partyId});
+    }
+
+    this.delAllPartyUsersNeo4j = async function(){
+        return await dbNeo4j.run('MATCH (u:User)-[r:PLAY]->(p:Party) DELETE r');
     }
 
 }

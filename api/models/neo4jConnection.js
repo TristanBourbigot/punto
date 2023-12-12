@@ -4,10 +4,7 @@ class neo4jConnection{
 
     constructor(){
         this.driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic("neo4j", "root"));
-        this.session = this.driver.session({
-            database: 'punto',
-            defaultAccessMode: neo4j.session.WRITE
-          });
+        this.session = this.driver.session();
     }
 
     getSession(){
@@ -21,4 +18,4 @@ class neo4jConnection{
 }
 
 var db = new neo4jConnection();
-module.exports = db.getDriver();
+module.exports = db.getSession();

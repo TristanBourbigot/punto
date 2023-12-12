@@ -17,7 +17,7 @@ export default {
             playeurName: ["Joueur 1", "Joueur 2", "Joueur 3", "Joueur 4"],
             card: [[], [], [], []],
             cardPlayed: [],
-            usersId: [[], [], []],
+            usersId: [[], [], [], []],
             partyId: [],
             dialog: true,
             dialogManagement: false,
@@ -157,13 +157,26 @@ export default {
                 }, (error) => {
                     console.log(error);
                 });
+
+                await axios.post('http://localhost:4000/addUserNeo4j', {
+                    name: this.playeurName[i]
+                }).then((response) => {
+                    this.usersId[3].push(response.data.userId);
+                }, (error) => {
+                    console.log(error);
+                });
             }
             await axios.post('http://localhost:4000/addPartySqlite', {}).then(async (response) => {
                 this.partyId.push(response.data.partyId);
                 await axios.post('http://localhost:4000/addPartyMysql', {}).then(async (response) => {
                     this.partyId.push(response.data.insertId);
-                    await axios.post('http://localhost:4000/addPartyMongo', {}).then((response) => {
+                    await axios.post('http://localhost:4000/addPartyMongo', {}).then(async (response) => {
                         this.partyId.push(response.data.insertedId);
+                        await axios.post('http://localhost:4000/addPartyNeo4j', {}).then((response) => {
+                            this.partyId.push(response.data.partyId);
+                        }, (error) => {
+                            console.log(error);
+                        });
                     }, (error) => {
                         console.log(error);
                     });
@@ -194,6 +207,14 @@ export default {
                 await axios.post('http://localhost:4000/addPartyUsersMongo', {
                     userId: this.usersId[2][i],
                     partyId: this.partyId[2]
+                }).then((response) => {
+                    // console.log(response);
+                }, (error) => {
+                    console.log(error);
+                });
+                await axios.post('http://localhost:4000/addPartyUsersNeo4j', {
+                    userId: this.usersId[3][i],
+                    partyId: this.partyId[3]
                 }).then((response) => {
                     // console.log(response);
                 }, (error) => {
@@ -400,6 +421,14 @@ export default {
             await axios.put('http://localhost:4000/updatePartyMongo', {
                 winnerId: this.usersId[2][this.playeurName.indexOf(winnerName)],
                 id: this.partyId[2]
+            }).then((response) => {
+                // console.log(response);
+            }, (error) => {
+                console.log(error);
+            });
+            await axios.put('http://localhost:4000/updatePartyNeo4j', {
+                winnerId: this.usersId[3][this.playeurName.indexOf(winnerName)],
+                id: this.partyId[3]
             }).then((response) => {
                 // console.log(response);
             }, (error) => {
